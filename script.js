@@ -45,6 +45,57 @@ trackingForm?.addEventListener("submit", (event) => {
   }
 });
 
+const quoteForm = document.querySelector("#quote");
+const quoteFormStatus = document.querySelector("#quoteFormStatus");
+
+quoteForm?.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  const formData = new FormData(quoteForm);
+  const values = Object.fromEntries(formData.entries());
+  const requiredFields = [
+    "name",
+    "phone",
+    "email",
+    "pickupCountry",
+    "destinationCountry",
+    "shipmentType",
+    "weight",
+    "message",
+  ];
+
+  const missing = requiredFields.filter((field) => !String(values[field] || "").trim());
+  if (missing.length) {
+    quoteFormStatus.textContent = "Please fill in all required fields before sending your quote request.";
+    quoteFormStatus.classList.add("form-status--error");
+    quoteFormStatus.classList.remove("form-status--success");
+    return;
+  }
+
+  const subject = "AMT Shipping Quote Request";
+  const body = [
+    `Name: ${values.name}`,
+    `Phone: ${values.phone}`,
+    `Email: ${values.email}`,
+    `Pickup Country: ${values.pickupCountry}`,
+    `Destination Country: ${values.destinationCountry}`,
+    `Shipment Type: ${values.shipmentType}`,
+    `Weight: ${values.weight}`,
+    `Dimensions: ${values.dimensions || "Not provided"}`,
+    "",
+    "Message:",
+    values.message,
+  ].join("\n");
+
+  const mailtoUrl = `mailto:sales@amtxpress.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+  quoteFormStatus.textContent = "Your email app should open now. Please send the prepared quote request to sales@amtxpress.com.";
+  quoteFormStatus.classList.add("form-status--success");
+  quoteFormStatus.classList.remove("form-status--error");
+
+  window.location.href = mailtoUrl;
+});
+
 const revealObserver = new IntersectionObserver(
   (entries) => {
     entries.forEach((entry) => {

@@ -720,6 +720,23 @@ h2 {
   backdrop-filter: blur(18px);
 }
 
+.form-status {
+  margin: 0 0 18px;
+  min-height: 1.5em;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.form-status--success {
+  color: #c6f6d5;
+}
+
+.form-status--error {
+  color: #fed7d7;
+}
+
 .inline-form label {
   display: block;
   margin-bottom: 10px;

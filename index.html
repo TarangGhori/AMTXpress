@@ -242,23 +242,24 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
             <p class="eyebrow">Get Quote</p>
             <h2>Request A Fast Shipping Quote</h2>
             <div class="form-grid">
-              <input type="text" placeholder="Name" />
-              <input type="tel" placeholder="Phone" />
-              <input type="email" placeholder="Email" />
-              <input type="text" placeholder="Pickup Country" />
-              <input type="text" placeholder="Destination Country" />
-              <select aria-label="Shipment type">
-                <option>Shipment Type</option>
-                <option>Air Cargo</option>
-                <option>Sea Cargo</option>
-                <option>Courier</option>
-                <option>Commercial Cargo</option>
+              <input id="quoteName" name="name" type="text" placeholder="Name" required />
+              <input id="quotePhone" name="phone" type="tel" placeholder="Phone" required />
+              <input id="quoteEmail" name="email" type="email" placeholder="Email" required />
+              <input id="pickupCountry" name="pickupCountry" type="text" placeholder="Pickup Country" required />
+              <input id="destinationCountry" name="destinationCountry" type="text" placeholder="Destination Country" required />
+              <select id="shipmentType" name="shipmentType" aria-label="Shipment type" required>
+                <option value="" disabled selected>Shipment Type</option>
+                <option value="Air Cargo">Air Cargo</option>
+                <option value="Sea Cargo">Sea Cargo</option>
+                <option value="Courier">Courier</option>
+                <option value="Commercial Cargo">Commercial Cargo</option>
               </select>
-              <input type="text" placeholder="Weight" />
-              <input type="text" placeholder="Dimensions" />
-              <textarea placeholder="Message"></textarea>
+              <input id="shipmentWeight" name="weight" type="text" placeholder="Weight" required />
+              <input id="shipmentDimensions" name="dimensions" type="text" placeholder="Dimensions" />
+              <textarea id="quoteMessage" name="message" placeholder="Message" required></textarea>
             </div>
-            <button class="button button--primary" type="button">Submit Quote Request <i data-lucide="send"></i></button>
+            <div id="quoteFormStatus" class="form-status" aria-live="polite"></div>
+            <button class="button button--primary" type="submit">Submit Quote Request <i data-lucide="send"></i></button>
           </form>
         </div>
       </section>
