@@ -22,6 +22,29 @@ window.addEventListener("scroll", () => {
   siteHeader.classList.toggle("is-scrolled", window.scrollY > 12);
 });
 
+const trackingForm = document.querySelector("#trackingForm");
+const trackingNumber = document.querySelector("#trackingNumber");
+
+trackingForm?.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  const trackingNo = trackingNumber?.value.trim();
+  if (!trackingNo) {
+    trackingNumber?.focus();
+    return;
+  }
+
+  const trackingUrl = new URL("http://admin.amtxpress.com/api/tracking_api/get_tracking_data");
+  trackingUrl.searchParams.set("api_company_id", "11");
+  trackingUrl.searchParams.set("customer_code", "superadmin");
+  trackingUrl.searchParams.set("tracking_no", trackingNo);
+
+  const trackingPage = window.open(trackingUrl.toString(), "_blank", "noopener");
+  if (!trackingPage) {
+    window.location.href = trackingUrl.toString();
+  }
+});
+
 const revealObserver = new IntersectionObserver(
   (entries) => {
     entries.forEach((entry) => {

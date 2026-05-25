@@ -227,11 +227,11 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
           <div class="tracking-panel reveal">
             <p class="eyebrow">Track Shipment</p>
             <h2>Know Exactly Where Your Cargo Is</h2>
-            <form class="inline-form">
+            <form class="inline-form" id="trackingForm">
               <label for="trackingNumber">Tracking Number</label>
               <div>
-                <input id="trackingNumber" type="text" placeholder="Enter AMT tracking number" />
-                <button class="button button--primary" type="button">Track Now</button>
+                <input id="trackingNumber" name="trackingNumber" type="text" placeholder="Enter AMT tracking number" required />
+                <button class="button button--primary" type="submit">Track Now</button>
               </div>
             </form>
             <div class="progress-ui" aria-label="Shipment progress example">
