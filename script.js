@@ -48,7 +48,7 @@ trackingForm?.addEventListener("submit", (event) => {
 const quoteForm = document.querySelector("#quote");
 const quoteFormStatus = document.querySelector("#quoteFormStatus");
 
-quoteForm?.addEventListener("submit", (event) => {
+quoteForm?.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   const formData = new FormData(quoteForm);
@@ -72,28 +72,39 @@ quoteForm?.addEventListener("submit", (event) => {
     return;
   }
 
-  const subject = "AMT Shipping Quote Request";
-  const body = [
-    `Name: ${values.name}`,
-    `Phone: ${values.phone}`,
-    `Email: ${values.email}`,
-    `Pickup Country: ${values.pickupCountry}`,
-    `Destination Country: ${values.destinationCountry}`,
-    `Shipment Type: ${values.shipmentType}`,
-    `Weight: ${values.weight}`,
-    `Dimensions: ${values.dimensions || "Not provided"}`,
-    "",
-    "Message:",
-    values.message,
-  ].join("\n");
+  const submitButton = quoteForm.querySelector('button[type="submit"]');
+  quoteFormStatus.textContent = "Sending your quote request...";
+  quoteFormStatus.classList.remove("form-status--error", "form-status--success");
+  submitButton.disabled = true;
 
-  const mailtoUrl = `mailto:sales@amtxpress.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  try {
+    formData.set("_subject", "AMT Shipping Quote Request");
+    formData.set("_template", "table");
 
-  quoteFormStatus.textContent = "Your email app should open now. Please send the prepared quote request to sales@amtxpress.com.";
-  quoteFormStatus.classList.add("form-status--success");
-  quoteFormStatus.classList.remove("form-status--error");
+    const response = await fetch("https://formsubmit.co/ajax/sales@amtxpress.com", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+      },
+      body: formData,
+    });
+    const result = await response.json();
 
-  window.location.href = mailtoUrl;
+    if (!response.ok || !result.success) {
+      throw new Error(result.message || "Unable to send your quote request right now.");
+    }
+
+    quoteForm.reset();
+    quoteFormStatus.textContent = "Thank you. Your quote request has been sent to sales@amtxpress.com.";
+    quoteFormStatus.classList.add("form-status--success");
+    quoteFormStatus.classList.remove("form-status--error");
+  } catch (error) {
+    quoteFormStatus.textContent = error.message || "Unable to send your quote request right now. Please try again.";
+    quoteFormStatus.classList.add("form-status--error");
+    quoteFormStatus.classList.remove("form-status--success");
+  } finally {
+    submitButton.disabled = false;
+  }
 });
 
 const revealObserver = new IntersectionObserver(
